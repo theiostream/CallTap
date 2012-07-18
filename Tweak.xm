@@ -273,13 +273,20 @@ static CTGestureHandler *sharedInstance_ = nil;
 	NSInteger idx = [[tableView _rowData] globalRowForRowAtIndexPath:indexPath];
 	ABRecordRef per = [self recordWithGlobalIndex:idx];
 	
-	if (CTGetIntPref(@"CTLongPressGesture", 2) && [[CTGestureHandler sharedInstance] hasGesture:@"CTLongPressGesture" defaultValue:2 person:per]) {
+	if ([[CTGestureHandler sharedInstance] hasGesture:@"CTLongPressGesture" defaultValue:2 person:per]) {
+		lp_ges:
 		UILongPressGestureRecognizer *longPress = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPress:)] autorelease];
 		[cell addGestureRecognizer:longPress];
 	}
+	else if (CTGetIntPref(@"CTShow", 0))
+		goto lp_ges;
 	
-	if (CTGetIntPref(@"CTAccessoryViewGesture", 5) && [[CTGestureHandler sharedInstance] hasGesture:@"CTAccessoryViewGesture" defaultValue:5 person:per])
+	if ([[CTGestureHandler sharedInstance] hasGesture:@"CTAccessoryViewGesture" defaultValue:5 person:per]) {
+		av_ges:
 		[cell setAccessoryType:UITableViewCellAccessoryDetailDisclosureButton];
+	}
+	else if (CTGetIntPref(@"CTShow", 0))
+		goto av_ges;
 	
 	NSLog(@"bundle: %@", [[NSBundle mainBundle] bundleIdentifier]);
 	return cell;

@@ -18,12 +18,32 @@
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>If this option is enabled, when, for instance, the Call action is assigned to the Detail button gesture, if there's no call data the button will still be shown.</string>
+		</dict>
+		
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false />
+			<key>defaults</key>
+			<string>am.theiostre.clicktocall</string>
+			<key>key</key>
+			<string>CTShow</string>
+			<key>label</key>
+			<string>Show everything</string>
+		</dict>
+		
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
 			<key>label</key>
 			<string>Gestures</string>
 			<key>footerText</key>
 			<string>When a contact picker popup is invoked, only the 'Show detail' gesture will trigger selection behaviour. Therefore, not having at least one gesture for such behaviour is highly discouraged.</string>
 		</dict>
-		 
+		
 		<dict>
 			<key>cell</key>
 			<string>PSLinkListCell</string>
