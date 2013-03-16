@@ -22,6 +22,11 @@ TODO:
 -- 5: detail
 */
 
+#ifndef kCFCoreFoundationVersionNumber_iOS_6_0
+#define kCFCoreFoundationVersionNumber_iOS_6_0 793.00
+#endif
+#define isiOS6() (kCFCoreFoundationVersionNumber>=kCFCoreFoundationVersionNumber_iOS_6_0)
+
 #define LAME_IS_IPHONE ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel:"]])
 extern "C" char *CPPhoneNumberCopyNormalized(char *);
 
@@ -271,6 +276,12 @@ static CTGestureHandler *sharedInstance_ = nil;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell = %orig;
 	NSInteger idx = [[tableView _rowData] globalRowForRowAtIndexPath:indexPath];
+	
+	if (LAME_IS_IPHONE && [[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"com.apple.mobilephone"] && isiOS6()) {
+		if (idx == 0) return cell;
+		idx--;
+	}
+	
 	ABRecordRef per = [self recordWithGlobalIndex:idx];
 	
 	if ([[CTGestureHandler sharedInstance] hasGesture:@"CTLongPressGesture" defaultValue:2 person:per]) {
@@ -294,6 +305,8 @@ static CTGestureHandler *sharedInstance_ = nil;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSInteger idx = [[tableView _rowData] globalRowForRowAtIndexPath:indexPath];
+	if (LAME_IS_IPHONE && [[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"com.apple.mobilephone"] && isiOS6()) idx--;
+	
 	BOOL nothing, expand;
 	
 	CTGestureHandler *handler = [CTGestureHandler sharedInstance];
@@ -311,6 +324,8 @@ static CTGestureHandler *sharedInstance_ = nil;
 %new(v@:@@)
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	NSInteger idx = [[tableView _rowData] globalRowForRowAtIndexPath:indexPath];
+	if (LAME_IS_IPHONE && [[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"com.apple.mobilephone"] && isiOS6()) idx--;
+	
 	BOOL nothing, expand;
 	
 	ABRecordRef record = [self recordWithGlobalIndex:idx];
@@ -333,6 +348,8 @@ static CTGestureHandler *sharedInstance_ = nil;
 		UITableView *tableView = (UITableView *)[cell superview];
 		NSIndexPath *cellIndexPath = [tableView indexPathForCell:cell];
 		NSInteger idx = [[tableView _rowData] globalRowForRowAtIndexPath:cellIndexPath];
+		if (LAME_IS_IPHONE && [[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"com.apple.mobilephone"] && isiOS6()) idx--;
+		
 		BOOL nothing, expand;
 		
 		ABRecordRef record = [self recordWithGlobalIndex:idx];
