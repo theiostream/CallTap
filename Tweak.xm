@@ -144,7 +144,7 @@ static CTGestureHandler *sharedInstance_ = nil;
 	CFRelease(result);
 	
 	NSInteger index = [actionSheet addButtonWithTitle:@"Cancel"];
-	NSLog(@"apparently the new button index is %i", index);
+	NSLog(@"apparently the new button index is %ld", (long)index);
 	[actionSheet setCancelButtonIndex:index];
 	
 	_scheme = scheme;

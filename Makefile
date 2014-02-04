@@ -1,3 +1,6 @@
+TARGET = ::4.3
+ARCHS = armv7 arm64
+
 include theos/makefiles/common.mk
 
 TWEAK_NAME = ClickToCall
@@ -11,3 +14,6 @@ internal-stage::
 	$(ECHO_NOTHING)mkdir -p $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences$(ECHO_END)
 	$(ECHO_NOTHING)cp CTPreferences.plist $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences/$(ECHO_END)
 	$(ECHO_NOTHING)cp icon.png $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences/ClickToCall.png$(ECHO_END)
+
+after-install::
+	install.exec "killall -9 Contacts"
