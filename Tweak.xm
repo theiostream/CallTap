@@ -345,7 +345,12 @@ static CTGestureHandler *sharedInstance_ = nil;
 - (void)didLongPress:(UILongPressGestureRecognizer *)recognizer {
 	if ([recognizer state] == UIGestureRecognizerStateBegan) {
 		ABMemberCell *cell = (ABMemberCell *)[recognizer view];
-		UITableView *tableView = (UITableView *)[cell superview];
+		UITableView *tableView = (UITableView *)cell;
+		while (1) {
+			tableView = (UITableView *)[tableView superview];
+			if ([tableView isKindOfClass:[UITableView class]]) break;
+		}
+		
 		NSIndexPath *cellIndexPath = [tableView indexPathForCell:cell];
 		NSInteger idx = [[tableView _rowData] globalRowForRowAtIndexPath:cellIndexPath];
 		if (LAME_IS_IPHONE && [[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"com.apple.mobilephone"] && isiOS6()) idx--;
